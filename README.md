@@ -10,7 +10,7 @@ El **motor de compatibilidad** aplica primero filtros excluyentes (niños, otras
 `% = puntos obtenidos ÷ suma de pesos activos × 100`
 
 ## Estado del proyecto
-- [ ] Etapa 0: preparación del repositorio
+- [X] Etapa 0: preparación del repositorio
 - [ ] Etapa 1: modelo de datos y admin
 - [ ] Etapa 2: motor de compatibilidad con tests
 - [ ] Etapa 3: lado del adoptante (cuestionario y listado)
