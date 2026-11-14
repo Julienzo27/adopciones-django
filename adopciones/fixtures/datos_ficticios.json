@@ -1,0 +1,206 @@
+[
+  {
+    "model": "adopciones.perro",
+    "pk": 1,
+    "fields": {
+      "nombre": "Luna",
+      "edad": 3,
+      "nivel_energia": "medio",
+      "experiencia_requerida": "alguna",
+      "espacio_necesario": "medio",
+      "apto_ninos": true,
+      "apto_otras_mascotas": true,
+      "apto_departamento": true,
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "adopciones.perro",
+    "pk": 2,
+    "fields": {
+      "nombre": "Thor",
+      "edad": 5,
+      "nivel_energia": "alto",
+      "experiencia_requerida": "mucha",
+      "espacio_necesario": "mucho",
+      "apto_ninos": false,
+      "apto_otras_mascotas": false,
+      "apto_departamento": false,
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "adopciones.perro",
+    "pk": 3,
+    "fields": {
+      "nombre": "Nina",
+      "edad": 0.5,
+      "nivel_energia": "alto",
+      "experiencia_requerida": "ninguna",
+      "espacio_necesario": "poco",
+      "apto_ninos": true,
+      "apto_otras_mascotas": true,
+      "apto_departamento": true,
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "adopciones.perro",
+    "pk": 4,
+    "fields": {
+      "nombre": "Bruno",
+      "edad": 9,
+      "nivel_energia": "bajo",
+      "experiencia_requerida": "ninguna",
+      "espacio_necesario": "poco",
+      "apto_ninos": true,
+      "apto_otras_mascotas": false,
+      "apto_departamento": true,
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "adopciones.perro",
+    "pk": 5,
+    "fields": {
+      "nombre": "Kira",
+      "edad": 4,
+      "nivel_energia": "medio",
+      "experiencia_requerida": "ninguna",
+      "espacio_necesario": "medio",
+      "apto_ninos": false,
+      "apto_otras_mascotas": true,
+      "apto_departamento": true,
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "adopciones.perro",
+    "pk": 6,
+    "fields": {
+      "nombre": "Toby",
+      "edad": 2,
+      "nivel_energia": "alto",
+      "experiencia_requerida": "alguna",
+      "espacio_necesario": "medio",
+      "apto_ninos": true,
+      "apto_otras_mascotas": true,
+      "apto_departamento": false,
+      "estado": "disponible"
+    }
+  },
+  {
+    "model": "adopciones.perro",
+    "pk": 7,
+    "fields": {
+      "nombre": "Lola",
+      "edad": 6,
+      "nivel_energia": "bajo",
+      "experiencia_requerida": "alguna",
+      "espacio_necesario": "poco",
+      "apto_ninos": true,
+      "apto_otras_mascotas": true,
+      "apto_departamento": true,
+      "estado": "adoptado"
+    }
+  },
+  {
+    "model": "adopciones.adoptante",
+    "pk": 1,
+    "fields": {
+      "nombre": "Ana",
+      "email": "ana@mail.com",
+      "tipo_vivienda": "departamento",
+      "espacio_exterior": "ninguno",
+      "hay_ninos": false,
+      "tiene_otras_mascotas": false,
+      "experiencia_previa": "alguna",
+      "nivel_actividad": "medio",
+      "edad_preferida": "adulto",
+      "pref_apto_ninos": false,
+      "pref_apto_otras_mascotas": false,
+      "pref_apto_departamento": true
+    }
+  },
+  {
+    "model": "adopciones.adoptante",
+    "pk": 2,
+    "fields": {
+      "nombre": "Beto",
+      "email": "beto@mail.com",
+      "tipo_vivienda": "casa",
+      "espacio_exterior": "amplio",
+      "hay_ninos": true,
+      "tiene_otras_mascotas": true,
+      "experiencia_previa": "mucha",
+      "nivel_actividad": "alto",
+      "edad_preferida": "sin preferencia",
+      "pref_apto_ninos": false,
+      "pref_apto_otras_mascotas": false,
+      "pref_apto_departamento": false
+    }
+  },
+  {
+    "model": "adopciones.adoptante",
+    "pk": 3,
+    "fields": {
+      "nombre": "Carla",
+      "email": "carla@mail.com",
+      "tipo_vivienda": "departamento",
+      "espacio_exterior": "chico",
+      "hay_ninos": false,
+      "tiene_otras_mascotas": false,
+      "experiencia_previa": "",
+      "nivel_actividad": "bajo",
+      "edad_preferida": "mayor",
+      "pref_apto_ninos": true,
+      "pref_apto_otras_mascotas": false,
+      "pref_apto_departamento": false
+    }
+  },
+  {
+    "model": "adopciones.criterio",
+    "pk": 1,
+    "fields": {
+      "nombre": "energia",
+      "peso": 30,
+      "activo": true
+    }
+  },
+  {
+    "model": "adopciones.criterio",
+    "pk": 2,
+    "fields": {
+      "nombre": "experiencia",
+      "peso": 25,
+      "activo": true
+    }
+  },
+  {
+    "model": "adopciones.criterio",
+    "pk": 3,
+    "fields": {
+      "nombre": "espacio",
+      "peso": 20,
+      "activo": true
+    }
+  },
+  {
+    "model": "adopciones.criterio",
+    "pk": 4,
+    "fields": {
+      "nombre": "edad",
+      "peso": 15,
+      "activo": true
+    }
+  },
+  {
+    "model": "adopciones.criterio",
+    "pk": 5,
+    "fields": {
+      "nombre": "preferencias",
+      "peso": 10,
+      "activo": true
+    }
+  }
+]
