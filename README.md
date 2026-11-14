@@ -11,7 +11,7 @@ El **motor de compatibilidad** aplica primero filtros excluyentes (niños, otras
 
 ## Estado del proyecto
 - [X] Etapa 0: preparación del repositorio
-- [ ] Etapa 1: modelo de datos y admin
+- [X] Etapa 1: modelo de datos y admin
 - [ ] Etapa 2: motor de compatibilidad con tests
 - [ ] Etapa 3: lado del adoptante (cuestionario y listado)
 - [ ] Etapa 4: solicitudes y aprobación
