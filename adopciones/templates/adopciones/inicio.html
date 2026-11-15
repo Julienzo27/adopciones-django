@@ -1,0 +1,13 @@
+{% extends "adopciones/base.html" %}
+{% block contenido %}
+<section class="portada">
+  <h1>Encontrá el perro que mejor encaja con vos</h1>
+  <p>Completá un cuestionario sobre tu hogar y tu estilo de vida, y te mostramos los perros disponibles ordenados por compatibilidad. La decisión final siempre es del personal del refugio.</p>
+  {% if adoptante %}
+    <a class="boton" href="{% url 'listado' %}">Ver perros compatibles</a>
+  {% else %}
+    <a class="boton" href="{% url 'registro' %}">Registrarme</a>
+    <a class="boton boton-sec" href="{% url 'ingresar' %}">Ya tengo perfil</a>
+  {% endif %}
+</section>
+{% endblock %}

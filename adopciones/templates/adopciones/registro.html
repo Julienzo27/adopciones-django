@@ -1,0 +1,10 @@
+{% extends "adopciones/base.html" %}
+{% block titulo %}Registro{% endblock %}
+{% block contenido %}
+<h1>Registro y cuestionario</h1>
+<form method="post" class="formulario">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="boton" type="submit">Registrarme</button>
+</form>
+{% endblock %}

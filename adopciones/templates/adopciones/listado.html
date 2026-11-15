@@ -1,0 +1,30 @@
+{% extends "adopciones/base.html" %}
+{% load l10n %}
+{% block titulo %}Perros compatibles{% endblock %}
+{% block contenido %}
+<h1>Perros compatibles con vos</h1>
+<div class="filtros">
+  <label>Buscar por nombre <input type="search" id="buscar"></label>
+  <label>Compatibilidad mínima: <output id="valor-minimo">0</output> %
+    <input type="range" id="minimo" min="0" max="100" step="5" value="0">
+  </label>
+</div>
+<p id="sin-resultados" class="nota" hidden>Ningún perro coincide con el filtro.</p>
+<div class="tarjetas" id="tarjetas">
+  {% for c in compatibles %}
+  <article class="tarjeta" data-nombre="{{ c.perro.nombre|lower }}" data-porcentaje="{{ c.porcentaje|unlocalize }}">
+    <h2>{{ c.perro.nombre }}</h2>
+    <p class="porcentaje">{{ c.porcentaje|floatformat:1 }} %</p>
+    <div class="barra-porcentaje"><span style="width: {{ c.porcentaje|unlocalize }}%"></span></div>
+    <p class="datos">{{ c.perro.edad|floatformat:"-1" }} años · energía {{ c.perro.get_nivel_energia_display|lower }}</p>
+    <a class="boton boton-sec" href="{% url 'detalle_perro' c.perro.pk %}">Ver detalle</a>
+  </article>
+  {% empty %}
+  <p class="nota">Por ahora no hay perros disponibles compatibles con tu perfil.</p>
+  {% endfor %}
+</div>
+{% endblock %}
+{% block scripts %}
+{% load static %}
+<script src="{% static 'adopciones/listado.js' %}"></script>
+{% endblock %}

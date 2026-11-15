@@ -1,0 +1,17 @@
+{% extends "adopciones/base.html" %}
+{% block titulo %}{{ item.perro.nombre }}{% endblock %}
+{% block contenido %}
+<p><a href="{% url 'listado' %}">← Volver al listado</a></p>
+<h1>{{ item.perro.nombre }} — {{ item.porcentaje|floatformat:1 }} % de compatibilidad</h1>
+<p>{{ item.perro.edad|floatformat:"-1" }} años · energía {{ item.perro.get_nivel_energia_display|lower }} · necesita espacio {{ item.perro.get_espacio_necesario_display|lower }} · experiencia requerida: {{ item.perro.get_experiencia_requerida_display|lower }}.</p>
+<h2>Cómo se calculó</h2>
+<table class="tabla">
+  <thead><tr><th>Criterio</th><th>Puntos obtenidos</th><th>Peso</th></tr></thead>
+  <tbody>
+  {% for fila in desglose %}
+    <tr><td>{{ fila.criterio }}</td><td>{{ fila.puntos|floatformat:"-1" }}</td><td>{{ fila.peso|floatformat:"-1" }}</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="nota">% = puntos obtenidos ÷ suma de pesos × 100. La decisión final es del personal del refugio.</p>
+{% endblock %}

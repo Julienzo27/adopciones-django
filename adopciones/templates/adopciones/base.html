@@ -1,0 +1,33 @@
+{% load static %}
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titulo %}Adopciones{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'adopciones/estilos.css' %}">
+</head>
+<body>
+  <header class="barra">
+    <a class="marca" href="{% url 'inicio' %}">🐾 Adopciones</a>
+    <nav>
+      {% if adoptante %}
+        <a href="{% url 'listado' %}">Perros</a>
+        <a href="{% url 'perfil' %}">Mi perfil</a>
+        <a href="{% url 'salir' %}">Salir ({{ adoptante.nombre }})</a>
+      {% else %}
+        <a href="{% url 'ingresar' %}">Ingresar</a>
+        <a href="{% url 'registro' %}">Registrarme</a>
+      {% endif %}
+    </nav>
+  </header>
+  <main class="contenido">
+    {% for mensaje in messages %}
+      <p class="aviso aviso-{{ mensaje.tags }}">{{ mensaje }}</p>
+    {% endfor %}
+    {% block contenido %}{% endblock %}
+  </main>
+  <footer class="pie">Proyecto personal basado en el diseño del equipo Código Digital. Todos los datos son ficticios.</footer>
+  {% block scripts %}{% endblock %}
+</body>
+</html>

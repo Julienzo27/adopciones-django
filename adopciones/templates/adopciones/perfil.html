@@ -1,0 +1,11 @@
+{% extends "adopciones/base.html" %}
+{% block titulo %}Mi perfil{% endblock %}
+{% block contenido %}
+<h1>Mi perfil</h1>
+<p class="nota">Email: {{ adoptante.email }}</p>
+<form method="post" class="formulario">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="boton" type="submit">Guardar</button>
+</form>
+{% endblock %}
