@@ -1,7 +1,11 @@
+from django import forms
 from django.contrib import admin, messages
+from django.forms import BaseModelFormSet
 
 from .models import Adoptante, Criterio, Perro, Solicitud
 from .services.solicitudes import ReglaSolicitud, aprobar_solicitud, rechazar_solicitud
+
+MENSAJE_SIN_CRITERIOS = "Tiene que quedar al menos un criterio activo con peso mayor que 0."
 
 
 @admin.register(Perro)
@@ -21,10 +25,56 @@ class AdoptanteAdmin(admin.ModelAdmin):
         return obj.perfil_completo
 
 
+class CriterioAdminForm(forms.ModelForm):
+    """Formulario de edición de un criterio: no deja la configuración sin criterios útiles."""
+
+    class Meta:
+        model = Criterio
+        fields = "__all__"
+
+    def clean(self):
+        datos = super().clean()
+        activo, peso = datos.get("activo"), datos.get("peso")
+        if activo is None or peso is None:
+            return datos
+        if not (activo and peso > 0):
+            otros = Criterio.objects.filter(activo=True, peso__gt=0).exclude(pk=self.instance.pk)
+            if not otros.exists():
+                raise forms.ValidationError(MENSAJE_SIN_CRITERIOS)
+        return datos
+
+
+class CriteriosFormSet(BaseModelFormSet):
+    """Validación de la lista editable: mira todos los criterios juntos."""
+
+    def clean(self):
+        super().clean()
+        if any(self.errors):
+            return
+        utiles = [
+            f for f in self.forms
+            if f.cleaned_data.get("activo") and (f.cleaned_data.get("peso") or 0) > 0
+        ]
+        if not utiles:
+            raise forms.ValidationError(MENSAJE_SIN_CRITERIOS)
+
+
 @admin.register(Criterio)
 class CriterioAdmin(admin.ModelAdmin):
-    list_display = ("nombre", "peso", "activo")
+    form = CriterioAdminForm
+    list_display = ("nombre", "peso", "activo", "peso_relativo")
     list_editable = ("peso", "activo")
+    ordering = ("id",)
+
+    def get_changelist_formset(self, request, **kwargs):
+        return super().get_changelist_formset(request, formset=CriteriosFormSet, **kwargs)
+
+    @admin.display(description="Peso relativo (%)")
+    def peso_relativo(self, obj):
+        if not obj.activo:
+            return "—"
+        total = sum(c.peso for c in Criterio.objects.filter(activo=True))
+        return f"{obj.peso / total * 100:.1f} %" if total else "—"
 
 
 @admin.register(Solicitud)
