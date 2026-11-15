@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.validators import MinValueValidator
 from django.db import models
 
 
@@ -111,12 +112,19 @@ class Criterio(models.Model):
         PREFERENCIAS = "preferencias", "Preferencias"
 
     nombre = models.CharField(max_length=20, choices=Nombre.choices, unique=True)
-    peso = models.FloatField(default=0, help_text="Debe ser 0 o mayor. No hace falta que los pesos sumen 100.")
+    peso = models.FloatField(
+        default=0,
+        validators=[MinValueValidator(0)],
+        help_text="Debe ser 0 o mayor. Los pesos son relativos: no hace falta que sumen 100.",
+    )
     activo = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = "criterio"
         verbose_name_plural = "criterios"
+        constraints = [
+            models.CheckConstraint(condition=models.Q(peso__gte=0), name="criterio_peso_no_negativo"),
+        ]
 
     def __str__(self):
         return f"{self.get_nombre_display()} (peso {self.peso:g})"
