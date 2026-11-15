@@ -1,6 +1,6 @@
 # Adopciones — sistema de matching adoptante–perro
 
-![Tests](https://github.com/Julienzo27/adopciones-django/actions/workflows/tests.yml/badge.svg)
+
 ![Python](https://img.shields.io/badge/Python-3.12%2B-blue)
 ![Django](https://img.shields.io/badge/Django-6-0c4b33)
 ![Licencia](https://img.shields.io/badge/licencia-MIT-green)
