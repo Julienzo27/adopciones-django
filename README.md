@@ -9,11 +9,13 @@ El **motor de compatibilidad** aplica primero filtros excluyentes (niños, otras
 
 `% = puntos obtenidos ÷ suma de pesos activos × 100`
 
+![Listado de perros compatibles](docs/listado.png)
+
 ## Estado del proyecto
 - [X] Etapa 0: preparación del repositorio
 - [X] Etapa 1: modelo de datos y admin
 - [X] Etapa 2: motor de compatibilidad con tests
-- [ ] Etapa 3: lado del adoptante (cuestionario y listado)
+- [X] Etapa 3: lado del adoptante (cuestionario y listado)
 - [ ] Etapa 4: solicitudes y aprobación
 - [ ] Etapa 5: pesos configurables
 - [ ] Etapa 6: API REST y frontend en JavaScript
