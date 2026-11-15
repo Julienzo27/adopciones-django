@@ -13,5 +13,13 @@
   {% endfor %}
   </tbody>
 </table>
+{% if solicitud_activa %}
+  <p class="aviso">Ya tenés una solicitud {{ solicitud_activa.get_estado_display|lower }} por {{ item.perro.nombre }}.</p>
+{% else %}
+  <form method="post" action="{% url 'solicitar' item.perro.pk %}">
+    {% csrf_token %}
+    <button class="boton" type="submit">Solicitar adopción de {{ item.perro.nombre }}</button>
+  </form>
+{% endif %}
 <p class="nota">% = puntos obtenidos ÷ suma de pesos × 100. La decisión final es del personal del refugio.</p>
 {% endblock %}

@@ -13,6 +13,7 @@
     <nav>
       {% if adoptante %}
         <a href="{% url 'listado' %}">Perros</a>
+        <a href="{% url 'mis_solicitudes' %}">Mis solicitudes</a>
         <a href="{% url 'perfil' %}">Mi perfil</a>
         <a href="{% url 'salir' %}">Salir ({{ adoptante.nombre }})</a>
       {% else %}

@@ -1,0 +1,23 @@
+{% extends "adopciones/base.html" %}
+{% block titulo %}Mis solicitudes{% endblock %}
+{% block contenido %}
+<h1>Mis solicitudes</h1>
+{% if solicitudes %}
+<table class="tabla">
+  <thead><tr><th>Perro</th><th>Compatibilidad</th><th>Estado</th><th>Fecha</th></tr></thead>
+  <tbody>
+  {% for s in solicitudes %}
+    <tr>
+      <td>{{ s.perro.nombre }}</td>
+      <td>{{ s.porcentaje_compatibilidad|floatformat:1 }} %</td>
+      <td>{{ s.get_estado_display }}</td>
+      <td>{{ s.fecha|date:"d/m/Y H:i" }}</td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<p class="nota">La decisión final siempre es del personal del refugio.</p>
+{% else %}
+<p class="nota">Todavía no enviaste ninguna solicitud. <a href="{% url 'listado' %}">Ver perros compatibles</a>.</p>
+{% endif %}
+{% endblock %}

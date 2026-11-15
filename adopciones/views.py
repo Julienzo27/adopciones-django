@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
 
 from .forms import IngresarForm, PerfilForm, RegistroForm
-from .models import Adoptante, Criterio
+from .models import Adoptante, Criterio, Perro, Solicitud
 from .services.motor import RechazoMotor, calcular_compatibilidades
+from .services.solicitudes import ReglaSolicitud, crear_solicitud
 
 SESION = "adoptante_id"
 
@@ -89,5 +91,35 @@ def detalle_perro(request, pk):
         {"criterio": Criterio.Nombre(nombre).label, "puntos": puntos, "peso": pesos[nombre]}
         for nombre, puntos in elegido.puntos.items()
     ]
-    return render(request, "adopciones/detalle_perro.html",
-                  {"adoptante": adoptante, "item": elegido, "desglose": desglose})
+    solicitud_activa = Solicitud.objects.filter(
+        adoptante=adoptante, perro=elegido.perro,
+        estado__in=[Solicitud.Estado.PENDIENTE, Solicitud.Estado.APROBADA],
+    ).first()
+    return render(request, "adopciones/detalle_perro.html", {
+        "adoptante": adoptante, "item": elegido, "desglose": desglose,
+        "solicitud_activa": solicitud_activa,
+    })
+
+
+@require_POST
+def solicitar(request, pk):
+    adoptante = _adoptante_actual(request)
+    if adoptante is None:
+        return redirect("ingresar")
+    perro = get_object_or_404(Perro, pk=pk)
+    try:
+        crear_solicitud(adoptante, perro)
+        messages.success(request, f"Enviaste tu solicitud por {perro.nombre}. El personal la va a revisar.")
+        return redirect("mis_solicitudes")
+    except ReglaSolicitud as error:
+        messages.error(request, str(error))
+        return redirect("listado")
+
+
+def mis_solicitudes(request):
+    adoptante = _adoptante_actual(request)
+    if adoptante is None:
+        return redirect("ingresar")
+    solicitudes = adoptante.solicitudes.select_related("perro")
+    return render(request, "adopciones/mis_solicitudes.html",
+                  {"adoptante": adoptante, "solicitudes": solicitudes})
