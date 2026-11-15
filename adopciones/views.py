@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
 from .forms import IngresarForm, PerfilForm, RegistroForm
@@ -123,3 +124,12 @@ def mis_solicitudes(request):
     solicitudes = adoptante.solicitudes.select_related("perro")
     return render(request, "adopciones/mis_solicitudes.html",
                   {"adoptante": adoptante, "solicitudes": solicitudes})
+
+
+@ensure_csrf_cookie
+def listado_dinamico(request):
+    """Listado que se arma en el navegador con JavaScript, consumiendo la API REST."""
+    adoptante = _adoptante_actual(request)
+    if adoptante is None:
+        return redirect("ingresar")
+    return render(request, "adopciones/listado_dinamico.html", {"adoptante": adoptante})

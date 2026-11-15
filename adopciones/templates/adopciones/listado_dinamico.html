@@ -1,0 +1,22 @@
+{% extends "adopciones/base.html" %}
+{% load static %}
+{% block titulo %}Listado dinámico{% endblock %}
+{% block contenido %}
+<h1>Perros compatibles (cargados desde la API)</h1>
+<p class="nota">Esta página pide los datos a <code>/api/perros/compatibles/</code> con JavaScript y arma las tarjetas en el navegador.</p>
+<div class="filtros">
+  <label>Buscar por nombre <input type="search" id="buscar"></label>
+  <label>Compatibilidad mínima: <output id="valor-minimo">0</output> %
+    <input type="range" id="minimo" min="0" max="100" step="5" value="0">
+  </label>
+</div>
+<p id="estado" class="nota">Cargando…</p>
+<div class="tarjetas" id="tarjetas"></div>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'adopciones/listado_api.js' %}"
+        data-url-lista="{% url 'api_compatibles' %}"
+        data-url-solicitudes="{% url 'api_solicitudes' %}"
+        data-url-ingresar="{% url 'ingresar' %}"
+        data-url-perfil="{% url 'perfil' %}"></script>
+{% endblock %}
