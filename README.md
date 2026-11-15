@@ -19,12 +19,12 @@ El **motor de compatibilidad** aplica primero filtros excluyentes (niños, otras
 - [X] Etapa 2: motor de compatibilidad con tests
 - [X] Etapa 3: lado del adoptante (cuestionario y listado)
 - [X] Etapa 4: solicitudes y aprobación
-- [ ] Etapa 5: pesos configurables
-- [ ] Etapa 6: API REST y frontend en JavaScript
+- [X] Etapa 5: pesos configurables
+- [X] Etapa 6: API REST y frontend en JavaScript
 - [ ] Etapa 7: tests automáticos, documentación y capturas
 
 ## Tecnologías
-Python 3 · Django · SQLite · HTML · CSS · JavaScript (más adelante: Django REST Framework, GitHub Actions)
+Python 3 · Django · SQLite · HTML · CSS · JavaScript · Django REST Framework (más adelante: GitHub Actions)
 
 ## Cómo ejecutarlo (Windows, PowerShell)
 ```powershell
