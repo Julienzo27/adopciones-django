@@ -1,0 +1,15 @@
+{% extends "adopciones/base.html" %}
+{% block titulo %}Ingresar el código{% endblock %}
+{% block contenido %}
+<h1>Ingresá tu código</h1>
+<p class="nota">Si <strong>{{ email }}</strong> está registrado, te enviamos un código de 6 dígitos. Vence a los 10 minutos y sirve una sola vez.</p>
+{% if en_desarrollo %}
+<p class="nota"><strong>Modo desarrollo:</strong> el correo no sale a Internet; el código aparece en la terminal donde está corriendo el servidor.</p>
+{% endif %}
+<form method="post" class="formulario">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="boton" type="submit">Ingresar</button>
+</form>
+<p><a href="{% url 'ingresar' %}">Pedir un código nuevo o usar otro email</a> (se puede pedir uno cada 60 segundos).</p>
+{% endblock %}

@@ -1,15 +1,18 @@
+from django.conf import settings
 from django.contrib import messages
 from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.http import require_POST
 
-from .forms import IngresarForm, PerfilForm, RegistroForm
+from .forms import CodigoForm, IngresarForm, PerfilForm, RegistroForm
 from .models import Adoptante, Criterio, Perro, Solicitud
+from .services.codigos import enviar_codigo, verificar_codigo
 from .services.motor import RechazoMotor, calcular_compatibilidades
 from .services.solicitudes import ReglaSolicitud, crear_solicitud
 
 SESION = "adoptante_id"
+PENDIENTE = "email_pendiente"      # email al que se le envió un código, todavía sin confirmar
 
 
 def _adoptante_actual(request):
@@ -25,21 +28,45 @@ def registro(request):
     form = RegistroForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
         adoptante = form.save()
-        request.session[SESION] = adoptante.pk
-        messages.success(request, "¡Listo! Tu perfil quedó registrado.")
-        return redirect("listado")
+        enviar_codigo(adoptante)
+        request.session[PENDIENTE] = adoptante.email
+        messages.success(request, "Tu perfil quedó registrado. Para confirmar tu email, ingresá el código que te enviamos.")
+        return redirect("ingresar_codigo")
     return render(request, "adopciones/registro.html", {"form": form})
 
 
 def ingresar(request):
+    """Paso 1: pedir el código. La respuesta es la misma exista o no el email,
+    para no revelar qué emails están registrados."""
     form = IngresarForm(request.POST or None)
     if request.method == "POST" and form.is_valid():
-        adoptante = Adoptante.objects.filter(email__iexact=form.cleaned_data["email"]).first()
+        email = form.cleaned_data["email"].strip().lower()
+        adoptante = Adoptante.objects.filter(email__iexact=email).first()
         if adoptante:
+            enviar_codigo(adoptante)
+        request.session[PENDIENTE] = email
+        messages.info(request, "Si el email está registrado, te enviamos un código de 6 dígitos. Vence en 10 minutos.")
+        return redirect("ingresar_codigo")
+    return render(request, "adopciones/ingresar.html", {"form": form})
+
+
+def ingresar_codigo(request):
+    """Paso 2: ingresar el código recibido por email."""
+    email = request.session.get(PENDIENTE)
+    if not email:
+        return redirect("ingresar")
+    form = CodigoForm(request.POST or None)
+    if request.method == "POST" and form.is_valid():
+        adoptante = Adoptante.objects.filter(email__iexact=email).first()
+        if adoptante and verificar_codigo(adoptante, form.cleaned_data["codigo"]):
+            request.session.cycle_key()             # sesión nueva al ingresar
+            request.session.pop(PENDIENTE, None)
             request.session[SESION] = adoptante.pk
             return redirect("listado")
-        messages.error(request, "No encontramos ese email. Podés registrarte primero.")
-    return render(request, "adopciones/ingresar.html", {"form": form})
+        messages.error(request, "El código es incorrecto o venció. Podés pedir uno nuevo.")
+    return render(request, "adopciones/ingresar_codigo.html", {
+        "form": form, "email": email, "en_desarrollo": settings.DEBUG,
+    })
 
 
 def salir(request):

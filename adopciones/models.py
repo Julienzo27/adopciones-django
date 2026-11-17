@@ -153,3 +153,23 @@ class Solicitud(models.Model):
 
     def __str__(self):
         return f"{self.adoptante.nombre} → {self.perro.nombre} ({self.get_estado_display()})"
+
+
+class CodigoIngreso(models.Model):
+    """Código de un solo uso para ingresar con el email. Se guarda solo su hash:
+    el código en sí únicamente viaja en el correo."""
+
+    adoptante = models.ForeignKey(Adoptante, on_delete=models.CASCADE, related_name="codigos")
+    codigo_hash = models.CharField(max_length=64)
+    creado = models.DateTimeField(auto_now_add=True)
+    vence = models.DateTimeField()
+    intentos = models.PositiveSmallIntegerField(default=0)
+    usado = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["-creado"]
+        verbose_name = "código de ingreso"
+        verbose_name_plural = "códigos de ingreso"
+
+    def __str__(self):
+        return f"Código de {self.adoptante.email} ({self.creado:%d/%m/%Y %H:%M})"

@@ -15,6 +15,17 @@ class IngresarForm(forms.Form):
     email = forms.EmailField(label="Tu email")
 
 
+class CodigoForm(forms.Form):
+    codigo = forms.RegexField(
+        label="Código de 6 dígitos", regex=r"^\d{6}$", max_length=6, strip=True,
+        error_messages={"invalid": "El código tiene 6 dígitos."},
+        widget=forms.TextInput(attrs={
+            "inputmode": "numeric", "autocomplete": "one-time-code",
+            "pattern": "[0-9]{6}", "autofocus": True,
+        }),
+    )
+
+
 class PerfilForm(forms.ModelForm):
     """Cuestionario del adoptante. En el perfil, el email no se edita."""
 

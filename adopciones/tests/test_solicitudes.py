@@ -5,6 +5,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from adopciones.models import Adoptante, Perro, Solicitud
+from adopciones.tests.utils import ingresar_con_codigo
 from adopciones.services.solicitudes import (
     ReglaSolicitud, aprobar_solicitud, crear_solicitud, rechazar_solicitud,
 )
@@ -99,7 +100,7 @@ class ResolverSolicitudTests(BaseSolicitudes):
 
 class VistasYAdminSolicitudesTests(BaseSolicitudes):
     def ingresar(self, email):
-        self.client.post(reverse("ingresar"), {"email": email})
+        ingresar_con_codigo(self.client, email)
 
     def test_solicitar_desde_la_vista(self):
         self.ingresar("ana@mail.com")

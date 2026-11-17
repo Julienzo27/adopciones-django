@@ -1,0 +1,12 @@
+{% extends "adopciones/base.html" %}
+{% block titulo %}Ingresar{% endblock %}
+{% block contenido %}
+<h1>Ingresar</h1>
+<p class="nota">Escribí tu email y te enviamos un código de 6 dígitos para ingresar. No hace falta una contraseña.</p>
+<form method="post" class="formulario">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button class="boton" type="submit">Enviarme el código</button>
+</form>
+<p>¿No tenés perfil? <a href="{% url 'registro' %}">Registrate</a>.</p>
+{% endblock %}

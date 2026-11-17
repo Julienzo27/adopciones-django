@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.urls import reverse
 
 from adopciones.models import Adoptante
+from adopciones.tests.utils import ingresar_con_codigo
 
 DATOS_REGISTRO = {
     "nombre": "Dani", "email": "dani@mail.com", "tipo_vivienda": "casa",
@@ -14,15 +15,17 @@ class VistasAdoptanteTests(TestCase):
     fixtures = ["datos_ficticios"]
 
     def ingresar(self, email):
-        return self.client.post(reverse("ingresar"), {"email": email})
+        return ingresar_con_codigo(self.client, email)
 
     def test_listado_sin_sesion_redirige_a_ingresar(self):
         self.assertRedirects(self.client.get(reverse("listado")), reverse("ingresar"))
 
-    def test_registro_crea_adoptante_y_abre_sesion(self):
+    def test_registro_crea_adoptante_y_pide_confirmar_el_email(self):
         respuesta = self.client.post(reverse("registro"), DATOS_REGISTRO)
-        self.assertRedirects(respuesta, reverse("listado"))
+        self.assertRedirects(respuesta, reverse("ingresar_codigo"))
         self.assertTrue(Adoptante.objects.get(email="dani@mail.com").perfil_completo)
+        # Todavía no ingresó: tiene que confirmar el código.
+        self.assertRedirects(self.client.get(reverse("listado")), reverse("ingresar"))
 
     def test_registro_con_campos_faltantes_muestra_errores(self):
         datos = dict(DATOS_REGISTRO)
