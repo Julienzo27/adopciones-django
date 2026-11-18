@@ -5,11 +5,13 @@
 ![Django](https://img.shields.io/badge/Django-6-0c4b33)
 ![Licencia](https://img.shields.io/badge/licencia-MIT-green)
 
-**English summary:** Django web app for a dog shelter. Adopters fill in a questionnaire and the system ranks the available dogs by compatibility (exclusion filters + weighted, configurable criteria; no AI). Shelter staff manage dogs and approve requests from the Django admin. Includes a REST API, a JavaScript page that consumes it, 47 automated tests and CI with GitHub Actions. Personal project based on an academic design; all data is fictional.
+**English summary:** Django web app for a dog shelter. Adopters fill in a questionnaire and the system ranks the available dogs by compatibility (exclusion filters + weighted, configurable criteria; no AI). Shelter staff manage dogs and approve requests from the Django admin. Includes a REST API, a JavaScript page that consumes it, 63 automated tests and CI with GitHub Actions. Personal project based on an academic design; all data is fictional.
 
 ![Listado de perros compatibles](docs/listado.png)
 
 ![Mis solicitudes](docs/solicitudes.png)
+
+![Ingreso con código de un solo uso](docs/ingreso_codigo.png)
 
 ## Qué es
 
@@ -69,6 +71,7 @@ adopciones-django/
 │   ├── forms.py, views.py, urls.py
 │   ├── services/
 │   │   ├── motor.py         # motor de compatibilidad (solo lectura)
+|   |   ├── codigos.py       # códigos de ingreso de un solo uso
 │   │   └── solicitudes.py   # crear, aprobar y rechazar solicitudes
 │   ├── api/                 # API REST (Django REST Framework)
 │   ├── templates/, static/  # páginas, estilos y JavaScript
@@ -96,7 +99,7 @@ adopciones-django/
 - [x] Etapa 5: pesos configurables
 - [x] Etapa 6: API REST y frontend en JavaScript
 - [x] Etapa 7: tests automáticos, documentación y capturas
-- [ ] Etapa 8 (opcional): acceso con email y código de un solo uso
+- [X] Etapa 8 (opcional): acceso con email y código de un solo uso
 
 ## Tecnologías
 
@@ -136,7 +139,7 @@ Después abrir http://127.0.0.1:8000/ (sitio) y http://127.0.0.1:8000/admin/ (pe
 
 ### Datos de prueba
 
-Los adoptantes ficticios se ingresan solo con su email (por ahora no hay código de verificación):
+Los adoptantes ficticios ingresan con su email y un código de un solo uso. En desarrollo, el código aparece en la terminal donde corre el servidor:
 
 | Adoptante | Email | Qué muestra |
 |---|---|---|
@@ -163,7 +166,7 @@ Respuestas: `401` sin sesión, `409` si el perfil está incompleto o la regla no
 python manage.py test
 ```
 
-47 tests que cubren el motor (con los valores calculados a mano), las páginas, las solicitudes y su atomicidad, los pesos configurables y la API. Se ejecutan automáticamente en cada `push` con GitHub Actions, en Python 3.12, 3.13 y 3.14.
+63 tests que cubren el motor (con los valores calculados a mano), las páginas, las solicitudes y su atomicidad, los pesos configurables y la API. Se ejecutan automáticamente en cada `push` con GitHub Actions, en Python 3.12, 3.13 y 3.14.
 
 ## Docker (demostración)
 
@@ -180,7 +183,7 @@ La imagen usa el servidor de desarrollo de Django y una base SQLite dentro del c
 
 ## Limitaciones y próximos pasos
 
-- El ingreso del adoptante es solo con el email. El diseño original prevé un código de un solo uso en cada ingreso (Etapa 8).
+- El diseño original prevé un código de un solo uso en cada ingreso (Etapa 8).
 - Los pesos iniciales no están calibrados con datos reales.
 - Usa el servidor de desarrollo y SQLite: faltaría configuración de producción (base de datos, archivos estáticos, variables de entorno).
 
